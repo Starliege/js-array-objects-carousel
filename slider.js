@@ -1,35 +1,108 @@
+// Riprendiamo l’esercizio carosello e rifacciamolo, questa volta usando gli oggetti, prendendo come riferimento il codice che trovate allegato,
+// Bisogna generare il murkup delle slide ciclando l’array di oggetti che trovare nel file js.
+// Il murkup da generare invece lo potrete trovare nel file html.
+// A parte la generezione del murkup, il resto della logica è la stessa del vecchio esercizio,
+// Se posso darvi un consiglio, a volte è più facile rifare le cose da capo invece che fare copia e incolla a raffica (che potrebbero portarvi a fare enormi pasticci).
+
 // console.log('slider')
 const slides = [
 	{
-		url: 'http://www.viaggiareonline.it/wp-content/uploads/2014/11/sweden_148857365.jpg',
+		url: 'img/01.jpg',
 		title: 'Svezia',
 		description:
 			'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Et temporibus voluptatum suscipit tempore aliquid deleniti aut veniam.',
 	},
 
 	{
-		url: 'https://static1.evcdn.net/images/reduction/1513757_w-1920_h-1080_q-70_m-crop.jpg',
+		url: 'img/02.jpg',
 		title: 'Perù',
 		description:
 			'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Et temporibus voluptatum suscipit tempore aliquid deleniti aut veniam.',
 	},
 
 	{
-		url: 'https://img.itinari.com/pages/images/original/0d3ed180-d22d-48e8-84df-19c4d888b41f-62-crop.jpg?ch=DPR&dpr=2.625&w=1600&s=7ebd4b5a9e045f41b4e0c7c75d298d6c',
+		url: 'img/03.jpg',
 		title: 'Chile',
 		description:
 			'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Et temporibus voluptatum suscipit tempore aliquid deleniti aut veniam.',
 	},
 	{
-		url: 'https://static1.evcdn.net/images/reduction/1583177_w-1920_h-1080_q-70_m-crop.jpg',
+		url: 'img/04.jpg',
 		title: 'Argentina',
 		description:
 			'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Et temporibus voluptatum suscipit tempore aliquid deleniti aut veniam.',
 	},
 	{
-		url: 'https://cdn.sanity.io/images/24oxpx4s/prod/ed09eff0362396772ad50ec3bfb728d332eb1c30-3200x2125.jpg?w=1600&h=1063&fit=crop',
+		url: 'img/05.jpg',
 		title: 'Colombia',
 		description:
 			'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Et temporibus voluptatum suscipit tempore aliquid deleniti aut veniam.',
 	},
 ]
+
+const slidesRef = document.getElementsByClassName('slides')[0];
+const thumbsRef = document.getElementsByClassName('thumbs')[0];
+let slide = '';
+let thumb = '';
+let active = 1;
+
+for (let key in slides) {
+    slide += `
+        <div class="slide">
+            <img src="${slides[key].url}" alt="">
+            <div class="text">
+                <h3>${slides[key].title}</h3>
+                <p>${slides[key].description}</p>
+            </div>
+        </div>`
+    thumb += `
+        <div class="thumb">
+            <img src="${slides[key].url}" alt="">
+        </div>
+    `
+}
+
+slidesRef.innerHTML = slide;
+document.getElementsByClassName('slide')[active].classList.add('active');
+
+thumbsRef.innerHTML += thumb;
+document.getElementsByClassName('thumb')[active].classList.add('active');
+
+const prev = document.querySelector('.prev');
+prev.addEventListener('click', function() {
+    if(active == 0) {                                                                   
+        active = slides.length - 1; 
+
+        document.querySelector('.slide.active').classList.remove('active');
+        document.getElementsByClassName('slide')[active].classList.add('active');
+
+        document.querySelector('.thumb.active').classList.remove('active');
+        document.getElementsByClassName('thumb')[active].classList.add('active');
+    } else if(active < slides.length) {
+        --active
+        document.querySelector('.slide.active').classList.remove('active');
+        document.getElementsByClassName('slide')[active].classList.add('active');
+
+        document.querySelector('.thumb.active').classList.remove('active');
+        document.getElementsByClassName('thumb')[active].classList.add('active');
+    } 
+});
+
+const next = document.querySelector('.next');
+next.addEventListener('click', function() {
+    if(active < slides.length - 1) {
+        ++active
+        document.querySelector('.slide.active').classList.remove('active');
+        document.getElementsByClassName('slide')[active].classList.add('active');
+
+        document.querySelector('.thumb.active').classList.remove('active');
+        document.getElementsByClassName('thumb')[active].classList.add('active');
+    } else if(active == slides.length - 1) { 
+        active = 0;
+        document.querySelector('.slide.active').classList.remove('active');
+        document.getElementsByClassName('slide')[active].classList.add('active');
+
+        document.querySelector('.thumb.active').classList.remove('active');
+        document.getElementsByClassName('thumb')[active].classList.add('active');
+    }
+});
